@@ -1,0 +1,19 @@
+services:
+  trx:
+    image: tronprotocol/java-tron:latest
+    container_name: mainnet-trx
+    restart: unless-stopped
+    ports:
+      - "8090:8090"   # REST fullNodePort
+      - "8091:8091"   # REST solidityPort
+      - "18888:18888" # P2P
+      - "50051:50051" # gRPC
+    volumes:
+      - trx-data:/data
+      - ./config.conf:/config.conf:ro
+    command: ["-c", "/config.conf", "-d", "/data"]
+    environment:
+      - JAVA_OPTS=-Xmx24g -XX:+UseConcMarkSweepGC
+
+volumes:
+  trx-data:
